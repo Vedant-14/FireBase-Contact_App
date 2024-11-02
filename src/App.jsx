@@ -1,8 +1,8 @@
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">
+    <div className='justify-items-stretch flex'>
+      <h1 className="text-3xl  underline flex border-l font-bold">
       Hello world!
     </h1>
     </div>

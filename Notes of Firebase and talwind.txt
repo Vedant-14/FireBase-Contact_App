@@ -1,0 +1,1 @@
+Firesotre : Firstore is an no sql database which can be managed by frontendk
