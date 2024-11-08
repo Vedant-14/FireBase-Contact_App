@@ -7,16 +7,14 @@ import {HiOutlineUserCircle} from 'react-icons/hi';
 import {MdDeleteForever,MdEdit} from 'react-icons/md';
 import ContactCard from './components/ContactCard';
 import Modal from './components/Modal';
+import AddAndUpdateContact from './components/AddAndUpdateContact';
 const App = () => {
 
   const [contacts,setContacts] = useState([]);
-  const [open,setOpen] = useState(false);
+  const [isOpen,setIsOpen] = useState(false);
 
-  const onOpen = ()=> {
-    setOpen(true);
-  }
-  const onClose = ()=> {
-    setOpen(false);
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
   }
   useEffect(()=>{
     // This is the block like static in java which executes at first means start of the program only 
@@ -49,7 +47,7 @@ const App = () => {
       <div className="flex gap-3 relative items-center">
         <IoIosSearch className='text-white text-3xl absolute ml-1' />
         <input type="text" placeholder="Search Contact" className="border border-white bg-transparent rounded-md p-1 h-10 flex-grow text-white pl-9 "></input>
-        <img src="/images/Group 1.png" alt="Plusimage" className='cursor-pointer' />
+        <img src="/images/PlusIcon.png" alt="Plusimage" className='cursor-pointer' onClick={toggleModal}/>
         </div>
 
       {/* <div className='text-white flex justify-center align-center pt-[300px] '>
@@ -65,7 +63,7 @@ const App = () => {
         }
       </div>
     </div> 
-    <Modal></Modal>
+    <AddAndUpdateContact isOpen={isOpen} toggleModal={toggleModal}/>
     </>
   )
 }
