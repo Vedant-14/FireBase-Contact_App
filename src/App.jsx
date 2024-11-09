@@ -33,12 +33,33 @@ const App = () => {
         );
         // console.log(contactsList);
         setContacts(contactsList);
+          setFilteredContacts(contactsList);
+          return contactsList;
+
+        })
+         // We can assume that contacsRef have database which we gonna use is store in it .
+        
+       
       } catch (error) {
           console.log(error);
       }
     }
     getContacts();
   },[]);
+
+  const searchContact  = (event)=> {
+    console.log(event.target.value);
+    const searchedText = event.target.value;
+    if(searchedText==='') {
+      setFilteredContacts(contacts);
+    }
+    // filter method on array creates new array with those elemetns which pass the below condition given in the function 
+    const filterContacts = contacts?.filter((contact)=> contact.name.toLowerCase().includes(searchedText.toLowerCase()) ||  contact.email.toLowerCase().includes(searchedText.toLowerCase())
+    );
+    console.log(filterContacts);
+    setFilteredContacts(filterContacts);
+    
+  }
   
   return (
     <>
@@ -46,7 +67,7 @@ const App = () => {
       <NavBar></NavBar>
       <div className="flex gap-3 relative items-center">
         <IoIosSearch className='text-white text-3xl absolute ml-1' />
-        <input type="text" placeholder="Search Contact" className="border border-white bg-transparent rounded-md p-1 h-10 flex-grow text-white pl-9 "></input>
+        <input type="text" onChange={()=> searchContact(event)} placeholder="Search Contact" className="border border-white bg-transparent rounded-md p-1 h-10 flex-grow text-white pl-9"/>
         <img src="/images/PlusIcon.png" alt="Plusimage" className='cursor-pointer' onClick={toggleModal}/>
         </div>
 
@@ -57,8 +78,8 @@ const App = () => {
 
       <div className='pt-3 flex flex-col gap-2'>
         {
-          contacts.map((contact)=> (
-            <ContactCard key = {contact.id} id = {contact.id} name={contact.name} email={contact.email}/>
+          filteredContacts.map((contact)=> (
+            <ContactCard key = {contact.id} contact={contact} isOpen={isOpen} toggleModal={toggleModal} />
           ))
         }
       </div>
