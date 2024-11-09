@@ -1,9 +1,16 @@
 import Modal from "./Modal";
-import {Formik,Form,Field} from 'formik';
+import {Formik,Form,Field, ErrorMessage} from 'formik';
 import {db} from '../config/Firebase';
-import {collection,addDoc} from 'firebase/firestore'
+import {collection,addDoc,deleteDoc, updateDoc, doc} from 'firebase/firestore'
+import { toast } from "react-toastify";
+import * as Yup from 'yup';
 
-const AddAndUpdateContact = ({isOpen,toggleModal}) => {
+const AddAndUpdateContact = ({isOpen,toggleModal,isUpdate,contact}) => {
+
+  const contactsValidationSchema = Yup.object().shape({
+    name:Yup.string("Name should be String").required("Name should not be Empty"),
+    email:Yup.string().email("Invlid Email").required("Email is required")
+  })
   const addContacts = async(contact)=> {
       try {
         const contactref = collection(db,'contacts');
@@ -27,7 +34,11 @@ const AddAndUpdateContact = ({isOpen,toggleModal}) => {
     <div>
         <Modal isOpen={isOpen} toggleModal={toggleModal}>
           <Formik
-          initialValues={{
+          validationSchema={contactsValidationSchema}
+          initialValues={isUpdate?{
+            name:contact.name,
+            email:contact.email
+          }:{
             name:'',
             email:'',
           }}
@@ -38,11 +49,17 @@ const AddAndUpdateContact = ({isOpen,toggleModal}) => {
             <Form className="flex flex-col gap-3">
               <div className='flex flex-col gap-1'>
                 <label htmlFor="name">Name</label>
-                <Field name='name' className='border h-10 p-1'/>
+                <Field name='name' className='border h-10 p-1' />
+                <div className="text-red-500 text-xs">
+                  <ErrorMessage name='name'/>
+                </div>
               </div>
               <div className='flex flex-col gap-1'>
                 <label htmlFor="email">Email</label>
-                <Field name='email' className='border h-10 p-1'/>
+                <Field name='email' className='border h-10 p-1' />
+                <div className="text-red-500 text-xs">
+                  <ErrorMessage name='email'/>
+                </div>
               </div>
               <button className="bg-orange px-3 py-1.5 border self-end" type='submit'>{isUpdate?"Update":"Add"} Contact</button>
             </Form>
