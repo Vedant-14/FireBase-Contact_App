@@ -14,7 +14,9 @@ const AddAndUpdateContact = ({isOpen,toggleModal,isUpdate,contact}) => {
   const addContacts = async(contact)=> {
       try {
         const contactref = collection(db,'contacts');
-        await addDoc(contactref,contact)
+        await addDoc(contactref,contact);
+        toggleModal();
+        toast.success(contact.name+"'s Contact Added "+"Successfully");
       } catch (error) {
           console.log(error);
       }

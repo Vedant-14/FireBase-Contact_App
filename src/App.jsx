@@ -8,10 +8,16 @@ import {MdDeleteForever,MdEdit} from 'react-icons/md';
 import ContactCard from './components/ContactCard';
 import Modal from './components/Modal';
 import AddAndUpdateContact from './components/AddAndUpdateContact';
+import useDisclose from './Hooks/useDisclose';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
 
   const [contacts,setContacts] = useState([]);
-  const [isOpen,setIsOpen] = useState(false);
+   const {isOpen,toggleModal} = useDisclose();
+   const [filteredContacts,setFilteredContacts] = useState(contacts);
+
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -20,10 +26,11 @@ const App = () => {
     // This is the block like static in java which executes at first means start of the program only 
     const getContacts = async() => {
       try {
-        const contactsRef = collection(db,"contacts"); // We can assume that contacsRef have database which we gonna use is store in it .
+        const contactsRef = collection(db,"contacts");
         const contactSnapshot = await getDocs(contactsRef);
-        console.log(contactSnapshot);
-        const contactsList = contactSnapshot.docs.map((doc)=> {
+        onSnapshot(contactsRef,(snapShot)=>{
+          // console.log(contactSnapshot);
+          const contactsList = snapShot.docs.map((doc)=> {
           return {
             id:doc.id, 
             ...doc.data(),
@@ -71,10 +78,10 @@ const App = () => {
         <img src="/images/PlusIcon.png" alt="Plusimage" className='cursor-pointer' onClick={toggleModal}/>
         </div>
 
-      {/* <div className='text-white flex justify-center align-center pt-[300px] '>
+      {/* {!filteredContacts}<div className='text-white flex justify-center align-center pt-[300px] '>
          <img src="/images/Hands Contact.png" alt="" />
           <h1 className='p-3'>No Contact Found</h1>
-      </div> */}
+      </div>  */}
 
       <div className='pt-3 flex flex-col gap-2'>
         {
@@ -84,9 +91,11 @@ const App = () => {
         }
       </div>
     </div> 
-    <AddAndUpdateContact isOpen={isOpen} toggleModal={toggleModal}/>
+    <AddAndUpdateContact isUpdate={false} isOpen={isOpen} toggleModal={toggleModal}/>
+    <ToastContainer position='bottom-center'/>
     </>
   )
 }
 
 export default App; 
+ 
