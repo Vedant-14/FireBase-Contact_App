@@ -12,6 +12,17 @@ const AddAndUpdateContact = ({isOpen,toggleModal}) => {
           console.log(error);
       }
   }
+  const updateContacts = async(values)=> {
+    try {
+        const docRef = doc(db,"contacts",contact.id);
+        await updateDoc(docRef,values);
+        toggleModal();
+        toast.success(contact.name+"'s Contact "+"Updated!");
+    }
+    catch(error) {
+          console.log(error);
+      }
+  }
   return (
     <div>
         <Modal isOpen={isOpen} toggleModal={toggleModal}>
@@ -22,7 +33,7 @@ const AddAndUpdateContact = ({isOpen,toggleModal}) => {
           }}
           onSubmit={(values)=> {
             console.log(values);
-            addContacts(values);
+            isUpdate?updateContacts(values):addContacts(values);
           }}>
             <Form className="flex flex-col gap-3">
               <div className='flex flex-col gap-1'>
@@ -33,7 +44,7 @@ const AddAndUpdateContact = ({isOpen,toggleModal}) => {
                 <label htmlFor="email">Email</label>
                 <Field name='email' className='border h-10 p-1'/>
               </div>
-              <button className="bg-orange px-3 py-1.5 border self-end" type='submit'>Add Contact</button>
+              <button className="bg-orange px-3 py-1.5 border self-end" type='submit'>{isUpdate?"Update":"Add"} Contact</button>
             </Form>
           </Formik>
     </Modal>
