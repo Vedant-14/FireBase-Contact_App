@@ -26,7 +26,7 @@ const updateContact = ()=> {
 }
   return (
     <>
-      <div
+     <div
         key={contact.id}
         className="bg-yellow flex gap-1 justify-between items-center p-2 rounded-lg"
       >
@@ -41,8 +41,11 @@ const updateContact = ()=> {
           <MdEdit className="" onClick={updateContact} />
           <MdDeleteForever onClick={()=>deleteContact(contact.id)}data-id={contact.id} className='delete-button' />
         </div>
+        
       </div>
-    
+      <AddAndUpdateContact contact={contact} isUpdate={true} isOpen={isOpen} toggleModal={toggleModal}/>
+    </>
+     
   );
 };
 

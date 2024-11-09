@@ -1,7 +1,7 @@
 import NavBar from './components/NavBar';
 import {IoIosSearch} from 'react-icons/io';
 import {useState,useEffect} from 'react';
-import {collection , getDocs} from 'firebase/firestore';
+import {collection , getDocs, onSnapshot} from 'firebase/firestore';
 import {db} from './config/Firebase';
 import {HiOutlineUserCircle} from 'react-icons/hi';
 import {MdDeleteForever,MdEdit} from 'react-icons/md';
@@ -14,14 +14,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
-  const [contacts,setContacts] = useState([]);
+   const [contacts,setContacts] = useState([]);
    const {isOpen,toggleModal} = useDisclose();
    const [filteredContacts,setFilteredContacts] = useState(contacts);
 
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  }
+  
   useEffect(()=>{
     // This is the block like static in java which executes at first means start of the program only 
     const getContacts = async() => {
@@ -31,15 +28,14 @@ const App = () => {
         onSnapshot(contactsRef,(snapShot)=>{
           // console.log(contactSnapshot);
           const contactsList = snapShot.docs.map((doc)=> {
-          return {
-            id:doc.id, 
-            ...doc.data(),
-          };
-        }
-          
-        );
-        // console.log(contactsList);
-        setContacts(contactsList);
+            return {
+              id:doc.id, 
+              ...doc.data(),
+            };  
+          }
+          );
+          // console.log(contactsList);
+          setContacts(contactsList);
           setFilteredContacts(contactsList);
           return contactsList;
 
@@ -97,5 +93,5 @@ const App = () => {
   )
 }
 
-export default App; 
+export default App;
  

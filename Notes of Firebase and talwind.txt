@@ -1,1 +1,9 @@
 Firesotre : Firstore is an no sql database which can be managed by frontendk
+
+FireStore Functions :
+    addDoc(collectionArgument,DataToUpdateWith);
+    collection(dbReference,"collectionName");
+    doc() : this Function brings the perticular document in     the colleciton to you.
+    doc(dbRef,'collectionName',idOfdoc/row);
+
+    

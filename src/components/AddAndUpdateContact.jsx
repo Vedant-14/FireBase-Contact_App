@@ -17,7 +17,7 @@ const AddAndUpdateContact = ({isOpen,toggleModal,isUpdate,contact}) => {
         await addDoc(contactref,contact);
         toggleModal();
         toast.success(contact.name+"'s Contact Added "+"Successfully");
-      } catch (error) {
+      } catch (error) { 
           console.log(error);
       }
   }
@@ -29,8 +29,8 @@ const AddAndUpdateContact = ({isOpen,toggleModal,isUpdate,contact}) => {
         toast.success(contact.name+"'s Contact "+"Updated!");
     }
     catch(error) {
-          console.log(error);
-      }
+      console.log(error);
+    }
   }
   return (
     <div>
